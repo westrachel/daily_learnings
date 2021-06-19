@@ -2,7 +2,7 @@
 #   baseline case result is returned the recursion method works back to return all values necessary
 #   to evaluate the initial method call.
 
-# Problem: create a method that accepts a positive integer n and returns the product of all positive integers
+# Problem 1: create a method that accepts a positive integer n and returns the product of all positive integers
 #    leading up to, and including, the positive integer n.
 
 # Examples:
@@ -42,4 +42,36 @@ end
 p factorial(9) == 362880
 # => true
 p factorial(4) == 24
+# => true
+
+# Problem 2: create a method that takes in a string and returns the length of the string
+#   <=> method should use recursion
+
+# Examples:
+# str_length("western") == 7
+
+# Data:
+# Input: a string
+#   > spaces count as characters in the string and should contribute to the string's length
+# Output: an integer
+#   > integer represents total # of characters in the string
+
+# Algorithm:
+# 1. Return the size of the slice returned by selecting the value located at the index variable position in the string (size of slice == 1 always)
+#     plus the size of the slice returned by selecting the value located at the (index variable value minus 1) position
+# 2. if there is no value returned by selecting the value located at the (index variable - 1) return 0
+
+# Code:
+def str_length(str)
+  if str.empty?
+    0
+  else
+    str.chop!.size.to_s.size + str_length(str)
+  end
+end
+
+# check work:
+p str_length("western") == 7
+# => true
+p str_length("today is") == 8
 # => true
