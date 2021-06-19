@@ -57,16 +57,25 @@ p factorial(4) == 24
 #   > integer represents total # of characters in the string
 
 # Algorithm:
-# 1. Return the size of the slice returned by selecting the value located at the index variable position in the string (size of slice == 1 always)
-#     plus the size of the slice returned by selecting the value located at the (index variable value minus 1) position
-# 2. if there is no value returned by selecting the value located at the (index variable - 1) return 0
-
+# 1. Check if the local variable that references the inputted string is empty, and if so return 0
+# 2. Otherwise, add 1 to a summation count plus the return value of calling the method internally on the remaining mutated sting
+#      premise of 'adding 1 to a running summation':
+#         > permanently remove the last character of the string, and then call size on the mutated string
+#         > find the remainder of the returned mutated string's size divided by 1, which will always be zero
+#         > convert 0, the return value of the prior step, to a string
+#         > find the size of the string, which will just be 1
+#      premise of calling the method internally on the remaining mutated string:
+#         > as described above in adding 1 to a running summation, the inputted string was mutated to remove its last character
+#         > when call the method itself on the string variable, there will be 1 fewer character to increment over, so the method
+#            will essentially work backwards until all characters have been removed and the string is empty, in which case 0 will be
+#             returned
+#
 # Code:
 def str_length(str)
   if str.empty?
     0
   else
-    str.chop!.size.to_s.size + str_length(str)
+    (str.chop!.size % 1).to_s.size + str_length(str)
   end
 end
 
@@ -74,4 +83,6 @@ end
 p str_length("western") == 7
 # => true
 p str_length("today is") == 8
+# => true
+p str_length("hello world!") == 12
 # => true
