@@ -1,0 +1,40 @@
+Baking Cookies Parallels Pass By Reference 
+
+How does baking cookies have anything to do with an object-oriented programming language? Well, it doesn’t really. At least not on the surface. However, when broken down into components, elements of baking cookies can be paralleled to Ruby concepts and the mental imagery of it can help solidify these concepts into memory. Let’s begin the quest to bake chocolate chip cookies.
+
+I do not have the baking prowess or muscle memory to eyeball ingredient amounts, throw them into a bowl, and produce ready-to-bake cookie dough without the help of a recipe. Recipes are similar to method definitions in Ruby. They contain step-by-step actions that allow for execution multiple times; so, if I want to make chocolate chip cookies for a birthday, for some other special occasion, or just because, I can call upon the recipe at any time in the same way that a defined method can be called and executed multiple times in a program.
+
+Okay, so I have called the recipe, but I haven’t passed in any ingredients to the recipe’s steps, so I have not properly executed the recipe. The recipe was defined with ingredients, which can be thought of as the parameters defined within method definitions. Usually cookie recipes specify some sort of binding agent as one of the ingredients. There can be multiple acceptable binding agents: eggs, flaxseed, mashed banana. In a similar sense, defined parameters established within method definitions indicate that outside information needs to be passed in, but this outside information could correspond to different values. In this instance of me calling the cookie recipe, I’ll pass in mashed banana as an argument. On other recipe invocations, I could pass in applesauce or flaxseed as the binding agent ingredients for the recipe call in the same way that I can pass different arguments into various invocations of one method.
+
+Recipes, like method definitions, can require multiple ingredients (arguments). In my recipe call, I’ll pass in sugar, vanilla extract, some buttery-like spread, flour, salt, baking soda, and chocolate chips. The proceeding steps mutate these ingredients to produce dough ready for baking. Well, yes, that’s how baking cookies works. This seems simple, but the act of putting original raw ingredients into a bowl, mixing them together, altering their state to produce dough, and then proceeding to bake the dough to create fully-fledged cookies parallels how Ruby exhibits some pass by reference behaviors. When mutable objects in ruby are passed in as arguments to a method invocation that contains mutating inner method(s), the original objects will be permanently changed by the method invocation. Essentially, instead of passing in copies of the original objects, references to the original objects are passed in, so that the original objects can be changed. So, in the same way that flour, sugar, baking soda, and other edible ingredients are added together and transformed into chocolate chip cookies, strings, arrays, and other mutable objects can be passed into methods and transformed via Ruby’s pass-by-reference-like behavior.
+
+# Cookiefy* Defined as a Method in Ruby:
+def cookiefy(dry_ingredients, wet_ingredients)   
+  dry_ingredients = dry_ingredients.join(‘’).stir!    
+  wet_ingredients = wet_ingredients.join(‘’).stir!
+  dry_ingredients.split(‘’).each do |ingredient|      
+    wet_ingredients << ingredient
+    stir!(wet_ingredients)
+  end
+  baking_sheet = []
+  wet_ingredients.split(‘’).each do |dough|
+    baking_sheet << dough
+  end
+  baking_sheet.map {|cookie| cookie.bake! }
+end 
+*cookiefy is a lengthy method and could be refactored and split into simpler methods
+
+# Cookiefy explained:
+i.	Two parameters (dry_ingredients and wet_ingredients) are defined and are intended to be assigned to array arguments passed into the method that contain all the various ingredients needed to make cookies when the method is invoked.
+ii.	The join method is called on the wet and dry ingredient objects respectively returning two strings with no spaces. The join() method call is intended to represent the baking act of pouring all dry ingredients into one bowl and all wet ingredients into a different bowl.
+iii.	Stir! is not a core ruby method, but is intended to represent a mutating method like other Ruby methods that end in the bang suffix. It’s called on the string returned value from the prior join method calls, and is intended to represent the baking act of mixing all ingredients together to form new homogenous mixtures
+a.	The wet_ingredients and dry_ingredients variables are reassigned to the return value of the chained join and stir! method calls on the original wet_ingredients and dry_ingredients.
+iv.	The split method is called on the dry_ingredients string (represents the homogenous dry mixture), which returns an array of individual characters (which represent pieces of the homogenous dry mixture).
+v.	The each method is called on the returned array from the prior split call and during each iteration each individual element of the array is pushed to the wet_ingredients string. This is intended to represent adding in a portion of the dry mixture to the wet ingredients bowl during the baking cookie process.
+a.	The mutating stir! method is called on the wet_ingredients string during each iteration after it is mutated to include part of the dry ingredients to represent the act of assimilating dry ingredients with wet ingredients during the baking cookie process.
+vi.	A variable, baking_sheet, is initialized to point to an empty array.
+vii.	The split method is called on the wet_ingredients string, which at this point represents all ingredients mixed together. Each element of the wet_ingredients string, which is supposed to represent a round bit of dough, is pushed to the baking_sheet array.
+viii.	The map method is invoked with a block on the baking_sheet array.
+a.	Within the block, the mutating bake! method is called on each element of the baking_sheet array, where each element of the baking_sheet array represents a round bit of dough.
+b.	The return value of the map method invocation with a block is a new array containing the transformed elements of the baking_sheet array, which represent baked cookie elements
+c.	Since the map method invocation is the last expression evaluated in the cookiefy method, the return value of the cookiefy method is the return value of the map method invocation, which is the baked cookies array.
